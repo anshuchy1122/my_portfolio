@@ -1,134 +1,367 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anshu Chaudhary | Portfolio</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap"
+        rel="stylesheet">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
+        :root {
+            --accent: #6366f1;
         }
 
         body {
-            line-height: 1.6;
-        }
-
-        header {
-            background: #333;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #000;
             color: #fff;
-            padding: 15px 0;
-            text-align: center;
+            margin: 0;
+            overflow-x: hidden;
         }
 
-        nav a {
-            color: #fff;
-            margin: 0 15px;
-            text-decoration: none;
+        /* ELECTRICAL PULSE BACKGROUND */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
         }
 
-        nav a:hover {
-            color: #00adb5;
+        /* GLASS STYLING */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .hero {
-            height: 90vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(to right, #00adb5, #393e46);
-            color: white;
-            text-align: center;
+        .glass-card {
+            transition: all 0.4s ease;
         }
 
-        .hero h1 {
-            font-size: 3rem;
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: var(--accent);
+            transform: translateY(-5px);
         }
 
-        section {
-            padding: 50px 20px;
-            text-align: center;
+        .text-gradient {
+            background: linear-gradient(to right, #fff, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .about, .skills, .contact {
-            max-width: 800px;
-            margin: auto;
+        /* MOBILE NAV */
+        #mobile-nav.open {
+            transform: translateX(0);
+            opacity: 1;
+            visibility: visible;
         }
 
-        .skills ul {
-            list-style: none;
+        /* CUSTOM SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 4px;
         }
 
-        .skills li {
-            background: #eee;
-            margin: 10px;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        footer {
-            background: #222;
-            color: white;
-            text-align: center;
-            padding: 15px;
-        }
-
-        @media (max-width: 600px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
         }
     </style>
 </head>
-<body>
 
-<header>
-    <h2>Anshu Chaudhary</h2>
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#skills">Skills</a>
-        <a href="#contact">Contact</a>
+<body class="selection:bg-indigo-500">
+
+    <canvas id="bg-canvas"></canvas>
+
+    <nav class="fixed top-0 w-full z-[100] p-4 md:p-6">
+        <div class="max-w-7xl mx-auto flex justify-between items-center glass rounded-2xl md:rounded-full px-6 py-4">
+            <a href="#" class="text-xl font-bold tracking-tighter">ANSHU<span class="text-indigo-500">.</span></a>
+
+            <ul
+                class="hidden lg:flex items-center space-x-10 text-xs font-bold uppercase tracking-widest text-gray-400">
+                <li><a href="#about" class="hover:text-white transition">About</a></li>
+                <li><a href="#skills" class="hover:text-white transition">Skills</a></li>
+                <li><a href="#projects" class="hover:text-white transition">Projects</a></li>
+                <li><a href="#contact" class="hover:text-white transition">Contact</a></li>
+                <li>
+                    <a href="resume.pdf" download="Resume.pdf"
+                        class="bg-indigo-600 text-white px-8 py-4 rounded-2xl font-bold">
+                        <i class="fa-solid fa-download mr-2"></i> Download CV
+                    </a>
+                </li>
+            </ul>
+
+            <button onclick="toggleMenu()" class="lg:hidden text-white text-2xl">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+        </div>
     </nav>
-</header>
 
-<section class="hero" id="home">
-    <div>
-        <h1>Hello, I'm Anshu</h1>
-        <p>BICTE 4th Semester Student</p>
+    <div id="mobile-nav"
+        class="fixed inset-0 bg-black/95 z-[105] flex flex-col items-center justify-center space-y-8 opacity-0 invisible -translate-x-full transition-all duration-500">
+        <button onclick="toggleMenu()" class="absolute top-10 right-10 text-3xl">&times;</button>
+        <a href="#about" onclick="toggleMenu()" class="text-4xl font-bold">About</a>
+        <a href="#skills" onclick="toggleMenu()" class="text-4xl font-bold">Skills</a>
+        <a href="#projects" onclick="toggleMenu()" class="text-4xl font-bold">Projects</a>
+        <a href="#contact" onclick="toggleMenu()" class="text-4xl font-bold">Contact</a>
+        <a href="resume.pdf" download="Resume.pdf" class="bg-indigo-600 text-white px-8 py-4 rounded-2xl font-bold">
+            <i class="fa-solid fa-download mr-2"></i> Download CV
+        </a>
     </div>
-</section>
 
-<section class="about" id="about">
-    <h2>About Me</h2>
-    <p>
-        I am Anshu Chaudhary, a student of BICTE (4th Semester).
-        I am passionate about learning technology, web development,
-        and building creative projects.
-    </p>
-</section>
+    <section class="min-h-screen flex flex-col items-center justify-center px-6 pt-20 text-center">
+        <div data-aos="zoom-out" data-aos-duration="1500">
+            <h1 class="text-5xl md:text-8xl font-extrabold mb-8 leading-[1.1] tracking-tight">
+                Architecting the <br> <span class="text-gradient">Digital Frontier.</span>
+            </h1>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12">
+                Full-stack engineer specializing in high-performance web applications and immersive UI/UX systems.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                <a href="#projects"
+                    class="px-10 py-5 bg-white text-black font-bold rounded-2xl hover:scale-105 transition-transform">Explore
+                    Portfolio</a>
+                <a href="#"
+                    class="px-10 py-5 glass font-bold rounded-2xl hover:bg-white/10 transition-all flex items-center justify-center gap-3">
+                    Let's Connect <i class="fa-solid fa-arrow-right-long"></i>
+                </a>
+            </div>
+        </div>
+    </section>
 
-<section class="skills" id="skills">
-    <h2>My Skills</h2>
-    <ul>
-        <li>HTML & CSS</li>
-        <li>Basic JavaScript</li>
-        <li>Computer Fundamentals</li>
-        <li>Teaching & Communication</li>
-    </ul>
-</section>
+    <section id="about" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="md:col-span-2 glass p-8 md:p-12 rounded-[2.5rem] glass-card" data-aos="fade-up">
+                <h2 class="text-indigo-500 font-bold uppercase tracking-widest text-xs mb-6">Introduction</h2>
+                <h3 class="text-3xl md:text-5xl font-bold mb-6">Turning complex ideas into <span
+                        class="text-gray-500">seamless realities.</span></h3>
+                <p class="text-gray-400 text-lg leading-relaxed mb-8">
+                    I am passionate about learning technology, web development,
+                    and building creative projects more and more.
+                    I bridge the gap between design and engineering. With focus on the modern MERN stack, I build
+                    scalable systems that don't just work—they inspire.
+                    Intreseted in AI , Mathematics and Volleyball.
+                </p>
+                <div class="flex gap-8 border-t border-white/5 pt-8">
+                    <div>
+                        <p class="text-2xl font-bold">+2 year</p>
+                        <p class="text-xs text-gray-500 uppercase">Experience </p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold">12</p>
+                        <p class="text-xs text-gray-500 uppercase">Certifications</p>
+                    </div>
+                </div>
+            </div>
 
-<section class="contact" id="contact">
-    <h2>Contact Me</h2>
-    <p>Email: anshuchau1122.com</p>
-    <p>Phone: +977-9811557703</p>
-</section>
+            <div class="glass p-8 rounded-[2.5rem] glass-card flex flex-col justify-between" data-aos="fade-up"
+                data-aos-delay="200">
+                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800"
+                    class="w-full aspect-square object-cover rounded-3xl grayscale mb-6">
+                <div>
+                    <p class="font-bold text-xl">Anshu Chaudhary</p>
+                    <p class="text-gray-500 text-sm mb-6">IT Student</p>
+                    <div class="flex gap-4">
+                        <a href="#"
+                            class="w-10 h-10 glass rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all"><i
+                                class="fa-brands fa-github"></i></a>
+                        <a href="#"
+                            class="w-10 h-10 glass rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all"><i
+                                class="fa-brands fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="skills" class="py-24 px-6 max-w-7xl mx-auto">
+        <h2 class="text-center text-4xl font-bold mb-16 tracking-tight" data-aos="fade-up">
+            SKILLS
+        </h2>
 
-<footer>
-    <p>© 2026 Anshu Chaudhary | All Rights Reserved</p>
-</footer>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 text-center">
 
+            <div class="glass p-8 rounded-[2rem] glass-card" data-aos="zoom-in" data-aos-delay="100">
+                <i class="fa-brands fa-html5 text-4xl text-orange-500 mb-4"></i>
+                <p class="font-bold text-sm uppercase tracking-wide">HTML</p>
+            </div>
+
+            <div class="glass p-8 rounded-[2rem] glass-card" data-aos="zoom-in" data-aos-delay="200">
+                <i class="fa-brands fa-css3-alt text-4xl text-blue-500 mb-4"></i>
+                <p class="font-bold text-sm uppercase tracking-wide">CSS</p>
+            </div>
+
+            <div class="glass p-8 rounded-[2rem] glass-card" data-aos="zoom-in" data-aos-delay="300">
+                <i class="fa-brands fa-js text-4xl text-yellow-400 mb-4"></i>
+                <p class="font-bold text-sm uppercase tracking-wide">JavaScript</p>
+            </div>
+
+            <div class="glass p-8 rounded-[2rem] glass-card" data-aos="zoom-in" data-aos-delay="500">
+                <i class="fa-brands fa-python text-4xl text-blue-400 mb-4"></i>
+                <p class="font-bold text-sm uppercase tracking-wide">Python</p>
+            </div>
+
+            <div class="glass p-8 rounded-[2rem] glass-card" data-aos="zoom-in" data-aos-delay="700">
+                <i class="fa-solid fa-database text-4xl text-indigo-400 mb-4"></i>
+                <p class="font-bold text-sm uppercase tracking-wide">Databases</p>
+            </div>
+
+            <div class="glass p-8 rounded-[2rem] glass-card" data-aos="zoom-in" data-aos-delay="800">
+                <i class="fa-brands fa-figma text-4xl text-pink-500 mb-4"></i>
+                <p class="font-bold text-sm uppercase tracking-wide">UI/UX Figma</p>
+            </div>
+
+            <div class="glass p-8 rounded-[2rem] glass-card" data-aos="zoom-in" data-aos-delay="900">
+                <i class="fa-solid fa-c text-4xl text-slate-400 mb-4"></i>
+                <p class="font-bold text-sm uppercase tracking-wide">C</p>
+            </div>
+
+            <div class="glass p-8 rounded-[2rem] glass-card" data-aos="zoom-in" data-aos-delay="1000">
+                <i class="fa-solid fa-hashtag text-4xl text-purple-400 mb-4"></i>
+                <p class="font-bold text-sm uppercase tracking-wide">C#</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="projects" class="py-24 px-6 max-w-7xl mx-auto">
+        <h2 class="text-4xl font-bold mb-12" data-aos="fade-right">Projects</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-8 glass rounded-[3rem] overflow-hidden relative group h-[450px]" data-aos="fade-up">
+                <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800"
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                <div class="absolute bottom-10 left-10 z-20">
+                    <h3 class="text-3xl font-bold mb-2">Comming soon!!</h3>
+                    <p class="text-gray-300 text-sm mb-6">Wait to get better result..(WEB RELATED)</p>
+                    <div class="flex gap-3">
+                        <span class="px-4 py-1.5 glass rounded-full text-[10px] font-bold">HTML5</span>
+                        <span class="px-4 py-1.5 glass rounded-full text-[10px] font-bold">CSS</span>
+                        <span class="px-4 py-1.5 glass rounded-full text-[10px] font-bold">JS</span>
+                    </div>
+                </div>
+            </div>
+            <div class="lg:col-span-4 glass rounded-[3rem] p-10 flex flex-col justify-between glass-card"
+                data-aos="fade-up" data-aos-delay="200">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4">USING OF AI AND RESOURCE MATERAILS.</h3>
+                    <p class="text-gray-400 text-sm">DOING RESEARCH ON THIS MATTER FOR BEST RESULT.</p>
+                </div>
+                <div class="h-[1px] bg-white/10 w-full my-6"></div>
+                <a href="#" class="text-indigo-400 font-bold flex items-center gap-2 group">
+                    View Project <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-24 px-6 max-w-5xl mx-auto">
+        <div class="glass p-10 md:p-20 rounded-[3rem] text-center" data-aos="zoom-in">
+            <h2 class="text-4xl md:text-7xl font-bold mb-6">Ready to <span class="text-gray-500">Collaborate?</span>
+            </h2>
+            <p class="text-gray-400 mb-12">I'm currently accepting new projects and full-time opportunities.</p>
+
+            <form class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Full Name</label>
+                    <input type="text" placeholder="John Doe"
+                        class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl focus:outline-none focus:border-indigo-500 transition">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Email
+                        Address</label>
+                    <input type="email" placeholder="john@example.com"
+                        class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl focus:outline-none focus:border-indigo-500 transition">
+                </div>
+                <div class="md:col-span-2 space-y-2">
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-4">Your
+                        Vision</label>
+                    <textarea rows="5" placeholder="Tell me about your project..."
+                        class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl focus:outline-none focus:border-indigo-500 transition"></textarea>
+                </div>
+                <button type="button"
+                    class="md:col-span-2 py-5 bg-white text-black font-bold rounded-2xl hover:bg-indigo-500 hover:text-white transition-all flex items-center justify-center gap-3">
+                    Send Message <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t border-white/5 text-center text-gray-500 text-xs tracking-widest uppercase">
+        <p>&copy; 2026 Anshu Chaudhary — Built with Precision</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Start Scroll Animations
+        AOS.init({ duration: 1000, once: true });
+
+        // Mobile Nav Function
+        function toggleMenu() {
+            const nav = document.getElementById('mobile-nav');
+            nav.classList.toggle('open');
+            document.body.style.overflow = nav.classList.contains('open') ? 'hidden' : 'auto';
+        }
+
+        // BACKGROUND ELECTRICAL PULSE SCRIPT
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() { this.init(); }
+            init() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.speed = Math.random() * 1.5 + 0.5;
+                this.length = Math.random() * 150 + 50;
+                this.opacity = 0;
+                this.fadeSpeed = Math.random() * 0.01 + 0.002;
+                this.growing = true;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.strokeStyle = `rgba(99, 102, 241, ${this.opacity})`;
+                ctx.lineWidth = 1;
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x, this.y + this.length);
+                ctx.stroke();
+
+                this.y += this.speed;
+                if (this.growing) {
+                    this.opacity += this.fadeSpeed;
+                    if (this.opacity >= 0.3) this.growing = false;
+                } else {
+                    this.opacity -= this.fadeSpeed;
+                }
+                if (this.opacity <= 0 || this.y > canvas.height) this.init();
+            }
+        }
+
+        for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => p.draw());
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
 </body>
+
 </html>

@@ -1,5 +1,3 @@
-# Anshu Chaudhary Portfolio
-**Tharuhat** <br>
-_Rautar_
-<h1>This is Tharuhat Clan.</h1>
-<p>Tharuhat deserves to rule in this Community.</p>
+## this is apple style glass-polymorphism based portfolio ##
+
+## Resume is not currently completely build so lack of information ##
